@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Promises | GovtInsight</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/View.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/header.css') }}"> 
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/footer.css') }}"> 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<header>
+    <img 
+      src="https://i.ibb.co/wZVPystV/Party-Manifesto-and-Govt-Schemes-Implementation-Status-Check-20250327-180457-0000.png" 
+      alt="logo"
+    />
+    <span style="color: lightgrey;">|</span>
+    <p>GovtInsight</p>
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    
+    <ul id="navMenu" class="nav-menu">
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('view') }}">View</a></li>
+      <li><a href="{{ url_for('complaint') }}">Complaint</a></li>
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+    </ul>
+</header>
+<body>
+
+  <h1>Government Promises Tracker</h1>
+
+  <div class="selector-container">
+    <h2>Select Government Type</h2>
+    <label><input type="radio" name="govtType" value="central" checked> Central Govt</label>
+    <label><input type="radio" name="govtType" value="state"> State Govt (Delhi)</label>
+
+    <div id="centralSessions" class="dropdown-container">
+      <h3>Select Session Period</h3>
+      <select id="centralSessionDropdown"></select>
+    </div>
+
+    <div id="stateSessions" class="dropdown-container" style="display:none;">
+      <h3>Select Session Period (Delhi)</h3>
+      <select id="stateSessionDropdown"></select>
+    </div>
+
+    <div class="result-box">
+      <pre id="resultText">Select Govt type and session period</pre>
+    </div>
+  </div>
+
+  <div class="view-container">
+    <div class="scroll-container">
+      <h2>Promises Completed</h2>
+      <input type="text" class="search-bar" id="completedSearch" placeholder="Search promises..." onkeyup="filterList('completedSearch','completedList')">
+      <div class="scroll-box" id="completedList">
+        {% for promise in completed_promises %}
+          <div class="promise-box">{{ promise }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="scroll-container">
+      <h2>Promises Not Completed</h2>
+      <input type="text" class="search-bar" id="notCompletedSearch" placeholder="Search promises..." onkeyup="filterList('notCompletedSearch','notCompletedList')">
+      <div class="scroll-box" id="notCompletedList">
+        {% for promise in not_completed_promises %}
+          <div class="promise-box">{{ promise }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class='view-container' style="border:1px solid lightgrey; border-radius:8px;box-shadow:0 8px 10px rgba(0,0,0,0.1); padding:8px;margin:3px;">
+      <canvas id="pieChart"></canvas>
+    </div>
+
+    <div class="dashboard-container">
+      <div class="chart-box">
+        <h2>Complaints per Promise</h2>
+        <canvas id="barChart"></canvas>
+      </div>
+
+      <div class="top5-box">
+        <h2>Top 5 Most Complained Promises</h2>
+        <div class="note">Showing % of total complaints within Top 5</div>
+        <div class="top5-section">
+          {% for item in top5 %}
+          <div class="top5-item">
+            <div class="label">
+              <span>{{ item.promise }}</span>
+              <span>{{ item.complaints }} complaints ({{ item.percent }}%)</span>
+            </div>
+            <div class="bar-container">
+              <div class="bar" style="width: {{ item.percent }}%;"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; GovtInsight 2025</p>
+    <p>Design & Developed by SHHN</p>
+</footer>
+<script>
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Completed', 'Not Completed'],
+      datasets: [{
+        label: 'Promise Completion',
+        data: [{{ completed_percentage }}, {{ not_completed_percentage }}],
+        backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { title: { display: true, text: 'Promise Completion Status' } }
+    }
+  });
+  
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ bar_labels|tojson }},
+      datasets: [{
+        label: 'Number of Complaints',
+        data: {{ bar_data|tojson }},
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } },
+      plugins: { title: { display: true, text: 'Complaints per Promise' } }
+    }
+  });
+  
+  function filterList(inputId, listId) {
+    const input = document.getElementById(inputId);
+    const filter = input.value.toLowerCase();
+    const items = document.getElementById(listId).getElementsByClassName('promise-box');
+    for (let i = 0; i < items.length; i++) {
+      const txtValue = items[i].textContent || items[i].innerText;
+      items[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+    }
+  }
+  function populateSessions() {
+      const centralDropdown = document.getElementById("centralSessionDropdown");
+      const stateDropdown = document.getElementById("stateSessionDropdown");
+
+      govtData.central.forEach(s => {
+        const option = document.createElement("option");
+        option.value = `${s.from}-${s.to}`;
+        option.text = `${s.from}-${s.to}`;
+        centralDropdown.appendChild(option);
+      });
+
+      govtData.state.delhi.forEach(s => {
+        const option = document.createElement("option");
+        option.value = `${s.from}-${s.to}`;
+        option.text = `${s.from}-${s.to}`;
+        stateDropdown.appendChild(option);
+      });
+    }
+  function updateResult() {
+      const type = document.querySelector('input[name="govtType"]:checked').value;
+      const session = type === 'central' 
+        ? document.getElementById("centralSessionDropdown").value
+        : document.getElementById("stateSessionDropdown").value;
+
+      if (!session) {
+        document.getElementById("resultText").textContent = "Select Govt type and session period";
+        return;
+      }
+
+      const [from, to] = session.split("-");
+      const data = type === 'central' ? govtData.central : govtData.state.delhi;
+      const found = data.find(s => s.from == from && s.to == to);
+
+      document.getElementById("resultText").textContent =
+        `${type === 'central' ? 'Central' : 'Delhi'} Government (${session}):\nRuling Party: ${found.party}`;
+    }
+    document.querySelectorAll('input[name="govtType"]').forEach(el => {
+      el.addEventListener("change", () => {
+        document.getElementById("centralSessions").style.display = el.value === 'central' ? "block" : "none";
+        document.getElementById("stateSessions").style.display = el.value === 'state' ? "block" : "none";
+        updateResult();
+      });
+    });
+
+    document.getElementById("centralSessionDropdown").addEventListener("change", updateResult);
+    document.getElementById("stateSessionDropdown").addEventListener("change", updateResult);
+    populateSessions()
+  </script>
+
+</body>
+</html>

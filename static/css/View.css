@@ -1,0 +1,126 @@
+.view-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* stacks on smaller screens */
+    margin: 5px;
+  }
+  
+  /* Existing styles below */
+  .scroll-container {
+    text-align: center;
+    padding: 6px;
+    max-width: 400px;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+  }
+  
+  .scroll-box {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .promise-box {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+  }
+  
+  .search-bar-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid lightgray;
+    box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+    border-radius: 55px;
+    box-sizing: border-box;
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #888;
+  }
+  .dashboard-container {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .chart-box,
+  .top5-box {
+    flex: 1 1 400px;
+    max-width: 450px;
+    min-width: 300px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .top5-section {
+    max-width: 400px;
+    margin-top: 20px;
+  }
+  
+  .top5-item {
+    margin: 15px 0;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .bar-container {
+    background: #f1f1f1;
+    border-radius: 25px;
+    overflow: hidden;
+    height: 25px;
+  }
+  
+  .bar {
+    height: 100%;
+    text-align: right;
+    line-height: 25px;
+    color: white;
+    padding-right: 10px;
+    border-radius: 25px;
+    animation: growBar 1s ease-out;
+  }
+  
+  .bar.rank-1 { background: #ff3e3e; }
+  .bar.rank-2 { background: #ff7043; }
+  .bar.rank-3 { background: #ffa726; }
+  .bar.rank-4 { background: #ffee58; color: black; }
+  .bar.rank-5 { background: #81c784; }
+  
+  @keyframes growBar {
+    from { width: 0; }
+    to { width: var(--bar-width); }
+  }
+  
+  .note {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }

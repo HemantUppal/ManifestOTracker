@@ -1,0 +1,155 @@
+/* Base container */
+.fcontainer {
+    max-width: 1500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ecf4f0;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(45, 57, 68, 0.2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    color: #2d3944;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
+  
+  /* Stats section */
+  .stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+    font-size: 1.05rem;
+    color: #2d3944;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #62a9bb;
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+  
+  .stat-item {
+    flex: 1 1 30%;
+    background-color: #f9fdfc;
+    border: 1px solid #d0ebdf;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  
+  /* Complaint button */
+  .file-complaint-btn {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 12px 24px;
+    margin-bottom: 25px;
+    font-size: 1rem;
+    background-color: #62a9bb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .file-complaint-btn:hover {
+    background-color: #4b8fa1;
+  }
+  
+  /* Form */
+  .complaint-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Label text */
+  .form-label {
+    display: flex;
+    flex-direction: column;
+    color: #2d3944;
+    font-weight: 500;
+  }
+  
+  .label-text {
+    margin-bottom: 6px;
+  }
+  
+  /* Inputs and selects */
+  .input-field {
+    padding: 10px;
+    border: 1px solid #62a9bb;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background-color: #fff;
+    color: #2d3944;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #7dce98;
+    box-shadow: 0 0 4px rgba(125, 206, 152, 0.4);
+  }
+  
+  /* Submit button */
+  .submit-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #7dce98;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: fit-content;
+    align-self: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #64b67f;
+  }
+  
+  /* Complaint number display */
+  .complaint-number {
+    margin-top: 30px;
+    text-align: center;
+    color: #e47924;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  /* Chart container */
+  .chart-container {
+    margin: 30px 0;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Search & filter section */
+  .search-filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+  }
+  

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaints | GovtInsight</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Complaint.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/header.css') }}"> 
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/footer.css') }}"> 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+    <header>
+        <img 
+          src="https://i.ibb.co/wZVPystV/Party-Manifesto-and-Govt-Schemes-Implementation-Status-Check-20250327-180457-0000.png" 
+          alt="logo"
+        />
+        <span style="color: lightgrey;">|</span>
+        <p>GovtInsight</p>
+        <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+        
+        <ul id="navMenu" class="nav-menu">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('view') }}">View</a></li>
+          <li><a href="{{ url_for('complaint') }}">Complaint</a></li>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+        </ul>
+    </header>
+    
+
+  <div class="fcontainer">
+    <h1 class="header">Track / Register a Complaint</h1>
+
+    <div class="search-filter-section">
+      <input type="text" class="input-field" placeholder="Search Manifestos...">
+      <div class="filter-group">
+        <label>Date Range:
+          <input type="date" class="input-field">
+          <input type="date" class="input-field">
+        </label>
+        <label>Party Name:
+          <input type="text" class="input-field" placeholder="Enter Party Name">
+        </label>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">Total Complaints Received: {{ total_complaints }}</div><br>
+      <div class="stat-item">Most Complained Scheme: <u>15 Lakh In Accounts</u></div><br>
+      <div class="stat-item">Total Complaints Resolved: {{ total_resolved }}</div><br>
+    </div>
+
+    <button
+      class="file-complaint-btn"
+      onclick="document.getElementById('complaintForm').scrollIntoView({ behavior: 'smooth' })"
+    >File a Complaint</button>
+
+    <form id="complaintForm" action="/file-complaint" method="POST" enctype="multipart/form-data" class="complaint-form">
+      <label class="form-label">Type of Government
+        <select class="input-field" name="gov_type" required>
+          <option value="">Select</option>
+          <option value="Central">Central</option>
+          <option value="State">State</option>
+          <option value="MCD">MCD</option>
+        </select>
+      </label>
+
+      <label class="form-label">Select State/UT
+        <select class="input-field" name="state">
+          <option value="">Select</option>
+          {% for s in states_and_uts %}
+            <option value="{{ s }}">{{ s }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="form-label">Select Tenure
+        <select class="input-field" name="tenure">
+          <option value="">Select</option>
+          {% for t in tenure_options %}
+            <option value="{{ t }}">{{ t }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="form-label">Upload Government ID
+        <input type="file" class="input-field" name="gov_id" required>
+      </label>
+
+      <label class="form-label">Upload Supporting Documents
+        <input type="file" class="input-field" name="support_docs" multiple required>
+      </label>
+
+      <button type="submit" class="submit-btn">Submit Complaint</button>
+    </form>
+
+    <div class="chart-container">
+      <canvas id="complaintChart"></canvas>
+    </div>
+
+    {% if complaint_number %}
+      <div class="complaint-number">
+        Your Complaint Number: <strong>{{ complaint_number }}</strong>
+      </div>
+    {% endif %}
+  </div>
+
+  <footer>
+    <p>&copy; GovtInsight 2025</p>
+    <p>Design & Developed by SHHN</p>
+</footer>
+
+  <script>
+    const ctx = document.getElementById('complaintChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Complaints'],
+        datasets: [
+          { label: 'Received', data: [{{ total_complaints }}], backgroundColor: '#8884d8' },
+          { label: 'Resolved', data: [{{ total_resolved }}], backgroundColor: '#82ca9d' }
+        ]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } },
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  </script>
+
+</body>
+</html>

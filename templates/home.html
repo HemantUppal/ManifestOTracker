@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/Main.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/header.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/footer.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/slider.css')}}">
+    <script src="{{ url_for('static', filename='Main.js') }}"></script>
+    
+</head>
+
+<header>
+    <img 
+      src="https://i.ibb.co/wZVPystV/Party-Manifesto-and-Govt-Schemes-Implementation-Status-Check-20250327-180457-0000.png" 
+      alt="logo"
+    />
+    <span style="color: lightgrey;">|</span>
+    <p>GovtInsight {{current_user.name}}</p>
+    <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+    
+    <ul id="navMenu" class="nav-menu">
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('view') }}">View</a></li>
+      <li><a href="{{ url_for('complaint') }}">Complaint</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      
+    </ul>
+</header>
+<body>
+
+<div class="slideshow-container">
+  <div class="mySlides fade">
+    <div class="numbertext">1 / 3</div>
+    <img src="https://i.ibb.co/99ytjWfr/IMG-20250416-WA0002.jpg" style="width:100%">
+  </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">2 / 3</div>
+    <img src="https://i.ibb.co/WNfXdF6N/IMG-20250416-WA0001.jpg" style="width:100%">
+  </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">3 / 3</div>
+    <img src="https://i.ibb.co/WpM3q06n/Untitled-design-20250417-151348-0000.png" style="width:100%">
+  </div>
+</div>
+
+<br>
+<div class="circles">
+  <div class="container">
+    <a href="{{ url_for('cengov') }}" style="text-decoration: none;">
+      <button class="square-button"
+        style="background-image: url('https://i.ibb.co/jZPFgbHG/250409-171027-0000.jpg');">
+        Central Govt
+      </button>
+    </a>
+
+    <a href="{{ url_for('stagov') }}" style="text-decoration: none;">
+      <button class="square-button"
+        style="background-image: url('https://i.ibb.co/nqTs2zPF/2050409-171135-0000.png');">
+        State Govt
+      </button>
+    </a>
+  </div>
+</div>
+</body>
+<footer>
+  <p>&copy; GovtInsight 2025</p>
+  <p>Design & Developed by SHHN</p>
+</footer>
+<script>
+function toggleMenu() {
+  const navMenu = document.getElementById('navMenu');
+  navMenu.classList.toggle('active');
+}
+  let slideIndex = 0;
+  showSlides();
+
+  function showSlides() {
+    const slides = document.getElementsByClassName("mySlides");
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) { slideIndex = 1 }
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 2000);
+  }
+</script>
+
